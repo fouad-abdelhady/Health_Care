@@ -4,7 +4,7 @@ import 'package:flutter_healthcare_app/src/widgets/common_widgets.dart';
 import 'package:flutter_healthcare_app/src/theme/text_styles.dart';
 import 'package:flutter_healthcare_app/src/theme/light_color.dart';
 
-class CertificateCard extends StatelessWidget {
+class CertificateCard extends StatefulWidget {
   static final String CERT_NAME_HINT = 'Certification ';
   static final String CERT_PROVIDER_HINT = 'Organization';
   static final String UPLOAD_BOTTON = 'Upload Scan';
@@ -17,7 +17,36 @@ class CertificateCard extends StatelessWidget {
   CertificateCard(
       {this.certificate, this.onDeletePressed, this.onUploadPressed});
 
+  @override
+  _CertificateCardState createState() => _CertificateCardState();
+
+  static Card getUnremovableCard(
+      {EdgeInsets edgeInsets, double elevation, Color color, Column column}) {
+    return Card(
+      margin: edgeInsets,
+      elevation: elevation,
+      color: color,
+      child: column,
+    );
+  }
+}
+
+class _CertificateCardState extends State<CertificateCard> {
   BuildContext context;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    widget.certificate.getUpdes = () {
+      setThisState();
+    };
+
+    super.initState();
+  }
+
+  void setThisState() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +59,19 @@ class CertificateCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextFields.getTextField(
-            hintText: CERT_NAME_HINT,
-            labelText: CERT_NAME_HINT,
+            hintText: CertificateCard.CERT_NAME_HINT,
+            labelText: CertificateCard.CERT_NAME_HINT,
             prefixIcon: Icon(Icons.insert_drive_file),
-            controller: certificate.certificateNameController,
+            controller: widget.certificate.certificateNameController,
             enabled: true,
             type: TextInputType.text,
           ),
           BoxesAndButtons.getSizedBox(height: BoxesAndButtons.SPACE_M / 2),
           TextFields.getTextField(
-            hintText: CERT_PROVIDER_HINT,
-            labelText: CERT_PROVIDER_HINT,
+            hintText: CertificateCard.CERT_PROVIDER_HINT,
+            labelText: CertificateCard.CERT_PROVIDER_HINT,
             prefixIcon: Icon(Icons.school),
-            controller: certificate.organizationController,
+            controller: widget.certificate.organizationController,
             enabled: true,
             type: TextInputType.text,
           ),
@@ -54,7 +83,7 @@ class CertificateCard extends StatelessWidget {
                 child: Center(
                     child: BoxesAndButtons.getButtonIcon(
                         icon: Icon(Icons.delete),
-                        onPressed: onDeletePressed,
+                        onPressed: widget.onDeletePressed,
                         label: Text(''),
                         color: Theme.of(context).backgroundColor)),
               ),
@@ -64,10 +93,10 @@ class CertificateCard extends StatelessWidget {
                 child: Center(
                   child: BoxesAndButtons.getButtonIcon(
                       icon: Icon(Icons.upload_rounded),
-                      onPressed: onUploadPressed,
+                      onPressed: widget.onUploadPressed,
                       label: TextWidgets.getText(
                           fontSize: FontSizes.body,
-                          text: UPLOAD_BOTTON,
+                          text: CertificateCard.UPLOAD_BOTTON,
                           color: LightColor.lightblack),
                       padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
                       color: Theme.of(context).backgroundColor),
@@ -77,20 +106,10 @@ class CertificateCard extends StatelessWidget {
           ),
           TextWidgets.getText(
               fontSize: FontSizes.bodySm,
-              text: certificate.fileName,
+              text: widget.certificate.fileName,
               color: LightColor.lightblack)
         ],
       ),
-    );
-  }
-
-  static Card getUnremovableCard(
-      {EdgeInsets edgeInsets, double elevation, Color color, Column column}) {
-    return Card(
-      margin: edgeInsets,
-      elevation: elevation,
-      color: color,
-      child: column,
     );
   }
 }

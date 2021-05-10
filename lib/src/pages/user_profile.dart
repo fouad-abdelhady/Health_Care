@@ -10,7 +10,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(),
-      body: getBody(),
+
     );
   }
 
@@ -18,7 +18,4 @@ class _UserProfileState extends State<UserProfile> {
     return AppBar();
   }
 
- Widget getBody() {
-
- }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_healthcare_app/src/config/route.dart';
 import 'package:flutter_healthcare_app/src/theme/theme.dart';
 
@@ -11,10 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Health Care',
       theme: AppTheme.lightTheme,
-      routes: Routes.getRoute(),
-      onGenerateRoute: (settings) => Routes.onGenerateRoute(settings),
+      onGenerateRoute: Routes.onGenerateRoute,
       debugShowCheckedModeBanner: false,
-      initialRoute: "SplashPage",
+      initialRoute: Routes.SPLASH_PAGE,
+      builder: EasyLoading.init(),
     );
   }
 }

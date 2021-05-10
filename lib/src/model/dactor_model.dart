@@ -1,107 +1,145 @@
 import 'dart:convert';
+import 'package:flutter_healthcare_app/src/classes/Rating.dart';
 import 'package:flutter_healthcare_app/src/classes/address.dart';
 import 'package:flutter_healthcare_app/src/classes/certificates.dart';
+import 'package:flutter_healthcare_app/src/classes/system_users.dart';
 
-class DoctorModel {
-    static List<dynamic> SPECIALIZATION = [];
-    static final DOCTORS_SPECIALIZATIONS_URL = "https://health-care000.herokuapp.com/doctors/types";
 
-    String name; //
-    String type;
-    String description; //
-    String email; //
-    String image;
-    String mobileNumber; //
-    double rating;
-    double good;
-    double medium;
-    double bad;
-    bool isFavorite;
-    bool isVerified;
-    Address address;
-    List<String> keywords;
-    List<Certificates> certificates;
+class DoctorModel implements SystemUsers{
+  static const JOB = "Doctor";
+  static List<dynamic> SPECIALIZATION = [];
+  static final DOCTORS_SPECIALIZATIONS_URL =
+      "https://health-care000.herokuapp.com/doctors/types";
 
-    DoctorModel({
-        this.name,
-        this.type,
-        this.description,
-        this.rating,
-        this.good,
-        this.medium,
-        this.bad,
-        this.isFavorite,
-        this.image,
-        this.address,
-        this.isVerified,
-        this.email,
-        this.mobileNumber,
-        this.keywords,
-        this.certificates
-    });
+  String job = JOB;
+  String fireBaseID; //
+  String name; //
+  String email; //
+  String mobileNumber; //
+  String about; //
+  String specialization;
+  String keywords;
+  String accountStatus;
+  String password; //
+  bool isVerified;
+  String image;
+  String universityCertificate;
+  String identitiyDocument;
+  Address address;
+  List<Certificates> certificates;
+  Rating rate;
+  bool isFavourit = false;
 
-    DoctorModel copyWith({
-        String name,
-        String type,
-        String description,
-        double rating,
-        double good,
-        double medium,
-        double bad,
-        bool isFavorite,
-        String image,
-        Address address,
-        bool isVerified,
-        String email,
-        String mobileNumber,
-        List<String> keywords,
-        List<Certificates> certificates
-    }) => 
-        DoctorModel(
-            name: name ?? this.name,
-            type: type ?? this.type,
-            description: description ?? this.description,
-            rating: rating ?? this.rating,
-            good: good ?? this.good,
-            medium: medium ?? this.medium,
-            bad: bad ?? this.bad,
-            isFavorite: isFavorite ?? this.isFavorite,
-            image: image ?? this.image,
-            address: address ?? this.address,
-            isVerified: isVerified ?? this.isVerified,
-            email: email ?? this.email,
-            mobileNumber: mobileNumber ?? this.mobileNumber,
-            keywords: keywords ?? this.keywords,
-            certificates: certificates ?? this.certificates
-        );
+  DoctorModel(
+      {this.fireBaseID,
+      this.name,
+      this.email,
+      this.mobileNumber,
+      this.about,
+      this.specialization,
+      this.keywords,
+      this.accountStatus,
+      this.isVerified,
+      this.image,
+      this.universityCertificate,
+      this.identitiyDocument,
+      this.address,
+      this.rate,
+      this.certificates});
 
-    factory DoctorModel.fromRawJson(String str) => DoctorModel.fromJson(json.decode(str));
+  DoctorModel copyWith(
+          {String fireBaseID,
+          String name,
+          String email,
+          String mobileNumber,
+          String about,
+          String specialization,
+          String keywords,
+          String accountStatus,
+          bool isVerified,
+          String image,
+          String universityCertificate,
+          String identitiyDocument,
+          Address address,
+          List<Certificates> certificates,
+          Rating rate}) =>
+      DoctorModel(
+        fireBaseID: fireBaseID ?? this.fireBaseID,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        mobileNumber: mobileNumber ?? this.mobileNumber,
+        about: about ?? this.about,
+        specialization: specialization ?? this.specialization,
+        keywords: keywords ?? this.keywords,
+        accountStatus: accountStatus ?? this.accountStatus,
+        isVerified: isVerified ?? this.isVerified,
+        image: image ?? this.image,
+        universityCertificate:
+            universityCertificate ?? this.universityCertificate,
+        identitiyDocument: identitiyDocument ?? this.identitiyDocument,
+        address: address ?? this.address,
+        certificates: certificates ?? this.certificates,
+        rate: rate ?? this.rate,
+      );
 
-    String toRawJson() => json.encode(toJson());
+  factory DoctorModel.fromRawJson(String str) =>
+      DoctorModel.fromJson(json.decode(str));
 
-    factory DoctorModel.fromJson(Map<String, dynamic> json) => DoctorModel(
-        name: json["name"] == null ? null : json["name"],
-        type: json["type"] == null ? null : json["type"],
-        description: json["description"] == null ? null : json["description"],
-        rating: json["rating"] == null ? null : json["rating"].toDouble(),
-        good: json["goodReviews"] == null ? null : json["goodReviews"].toDouble(),
-        medium: json["totalScore"] == null ? null : json["totalScore"].toDouble(),
-        bad: json["satisfaction"] == null ? null : json["satisfaction"].toDouble(),
-        isFavorite: json["isfavourite"] == null ? null : json["isfavourite"],
-        image: json["image"] == null ? null : json["image"],
+  //  String toRawJson() => json.encode(toJson());
 
+  factory DoctorModel.fromJson(Map<String, dynamic> json) {
+    var certs = json["certificates"] as List;
+    return DoctorModel(
+      fireBaseID: json["fireBaseId"] == null ? null : json["fireBaseId"],
+      name: json["name"] == null ? null : json["name"],
+      email: json["email"] == null ? null : json["email"],
+      mobileNumber: json["mobileNumber"] == null ? null : json["mobileNumber"],
+      about: json["about"] == null ? null : json["about"],
+      specialization:
+          json["specialization"] == null ? null : json["specialization"],
+      keywords: json["keywords"] == null ? null : json["keywords"],
+      accountStatus:
+          json["accountStatus"] == null ? null : json["accountStatus"],
+      isVerified: json["verified"] == null ? null : json["verified"],
+      image: json["image"] == null ? null : json["image"],
+      universityCertificate: json["universityCertificate"] == null
+          ? null
+          : json["universityCertificate"],
+      identitiyDocument:
+          json["identitiyDocument"] == null ? null : json["identitiyDocument"],
+      address:
+          json["address"] == null ? null : Address.fromJson(json["address"]),
+      certificates: json["certificates"] == null
+          ? null
+          : certs.map((cert) => Certificates.fromJson(cert)).toList(),
+      rate: json["rating"] == null ? null : Rating.fromJson(json["rating"]),
     );
+  }
 
-    Map<String, dynamic> toJson() => {
-        "name": name == null ? null : name,
-        "type": type == null ? null : type,
-        "description": description == null ? null : description,
-        "rating": rating == null ? null : rating,
-        "goodReviews": good == null ? null : good,
-        "totalScore": medium == null ? null : medium,
-        "satisfaction": bad == null ? null : bad,
-        "isfavourite": isFavorite == null ? null : isFavorite,
-        "image": image == null ? null : image,
+  Map<String, dynamic> toJson() {
+    List<Map> certificatesList = this.certificates != null
+        ? this.certificates.map((cert) => cert.toJson()).toList()
+        : null;
+    Map addressMap = this.address != null ? this.address.toJson() : null;
+    Map ratingMap = this.rate != null ? this.rate.toJson() : null;
+    return {
+      "fireBaseId": this.fireBaseID,
+      "name": this.name,
+      "email": this.email,
+      "mobileNumber": this.mobileNumber,
+      "about": this.about,
+      "specialization": this.specialization,
+      "keywords": this.keywords,
+      "accountStatus": this.accountStatus,
+      "verified": this.isVerified,
+      "image": this.image,
+      "universityCertificate": this.universityCertificate,
+      "identitiyDocument": this.identitiyDocument,
+      "address": addressMap,
+      "certificates": certificatesList,
+      "rating": ratingMap,
     };
+  }
 
+  String getObjJsonStr() => jsonEncode(this);
 }
